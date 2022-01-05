@@ -1,0 +1,13 @@
+{
+    "id": "delayexe",
+    "version": "1.0.0",
+    "name": "Delay Exe",
+    "description": "Delay execute command when all player was leave",
+    "dependencies": {
+        "mcdreforged": ">=2.0.0"
+    },
+    "author": [
+        "zyxkad"
+    ],
+    "link": "https://github.com/kmcsr/delayexe_mcdr/"
+}
