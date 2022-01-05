@@ -4,6 +4,12 @@ from .utils import *
 from . import globals as GL
 from . import commands as CMD
 
+__all__ = [
+	'add_delay_task'
+]
+
+add_delay_task, clear_delay_task = CMD.add_delay_task, CMD.clear_delay_task
+
 def on_load(server: MCDR.PluginServerInterface, prev_module):
 	if prev_module is None:
 		log_info('Delay ExE is on LOAD')

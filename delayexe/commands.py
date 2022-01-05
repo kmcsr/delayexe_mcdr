@@ -22,6 +22,9 @@ def add_delay_task(task):
 	delaylist.append(task)
 	GL.SERVER_INS.execute('list')
 
+def clear_delay_task():
+	delaylist.clear()
+
 _PLAYER_COUNT_RE = re.compile(r'There are (\d+) of a max of (\d+) players online.*')
 def on_info(server: MCDR.ServerInterface, info: MCDR.Info):
 	if info.is_from_server:
@@ -62,7 +65,7 @@ def command_run(source: MCDR.CommandSource, cmd: str):
 	add_delay_task(cmd)
 
 def command_cancel(source: MCDR.CommandSource):
-	delaylist.clear()
+	clear_delay_task()
 
 @new_thread
 def command_config_load(source: MCDR.CommandSource):

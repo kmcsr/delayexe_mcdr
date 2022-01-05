@@ -1,6 +1,6 @@
 {
     "id": "delayexe",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "name": "Delay Exe",
     "description": "Delay execute command when all player was leave",
     "dependencies": {
