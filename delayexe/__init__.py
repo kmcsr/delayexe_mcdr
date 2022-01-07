@@ -5,7 +5,7 @@ from . import globals as GL
 from . import commands as CMD
 
 __all__ = [
-	'add_delay_task'
+	'add_delay_task', 'clear_delay_task'
 ]
 
 add_delay_task, clear_delay_task = CMD.add_delay_task, CMD.clear_delay_task

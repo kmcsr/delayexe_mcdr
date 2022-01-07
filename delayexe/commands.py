@@ -40,7 +40,8 @@ def on_info(server: MCDR.ServerInterface, info: MCDR.Info):
 						c()
 
 def on_player_left(player: str, info: MCDR.Info):
-	info.get_server().execute('list')
+	if len(delaylist) > 0:
+		GL.SERVER_INS.execute('list')
 
 def register(server: MCDR.PluginServerInterface):
 	server.register_command(
