@@ -1,4 +1,6 @@
 
+import functools
+
 import mcdreforged.api.all as MCDR
 from . import globals as GL
 
@@ -9,11 +11,16 @@ __all__ = [
 
 def new_thread(call):
 	@MCDR.new_thread('delayexe')
+	@functools.wraps(call)
 	def c(*args, **kwargs):
 		return call(*args, **kwargs)
 	return c
 
 def join_rtext(*args, sep=' '):
+	if len(args) == 0:
+		return ''
+	if len(args) == 1:
+		return args[0]
 	return MCDR.RTextList(args[0], *(MCDR.RTextList(sep, a) for a in args[1:]))
 
 def send_block_message(source: MCDR.CommandSource, *args, sep='\n', log=False):
@@ -22,7 +29,6 @@ def send_block_message(source: MCDR.CommandSource, *args, sep='\n', log=False):
 		source.reply(t)
 		if log and not source.is_console:
 			source.get_server().logger.info(t)
-
 
 def send_message(source: MCDR.CommandSource, *args, sep=' ', prefix=GL.MSG_ID, log=False):
 	if source is not None:

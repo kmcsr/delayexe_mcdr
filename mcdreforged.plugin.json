@@ -1,8 +1,11 @@
 {
     "id": "delayexe",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "name": "Delay Exe",
-    "description": "Delay execute command when all player was leave",
+    "description": {
+        "en_us": "Delay execute command until all player have left",
+        "zh_cn": "延迟执行命令, 直到所有玩家都离开游戏"
+    },
     "dependencies": {
         "mcdreforged": ">=2.0.0"
     },

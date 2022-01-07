@@ -16,7 +16,10 @@ class DLEConfig(MCDR.Serializable):
 	# 0:guest 1:user 2:helper 3:admin 4:owner
 	minimum_permission_level: Dict[str, int] = {
 		'help':     0,
+		'query':    0,
 		'restart':  2,
+		'run':      3,
+		'cancel':   2,
 		'reload':   3,
 		'save':     3,
 	}

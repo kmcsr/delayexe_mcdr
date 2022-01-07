@@ -47,6 +47,7 @@ def register(server: MCDR.PluginServerInterface):
 		MCDR.Literal(Prefix).
 		runs(command_help).
 		then(GL.Config.literal('help').runs(command_help)).
+		then(GL.Config.literal('query').runs(command_query)).
 		then(GL.Config.literal('restart').runs(command_restart)).
 		then(GL.Config.literal('run').
 			then(MCDR.GreedyText('command').runs(lambda src, ctx: command_run(src, ctx['command'])))).
@@ -57,6 +58,9 @@ def register(server: MCDR.PluginServerInterface):
 
 def command_help(source: MCDR.CommandSource):
 	send_block_message(source, HelpMessage)
+
+def command_query(source: MCDR.CommandSource):
+	send_block_message(source, '当前共有{}个任务:'.format(len(delaylist)), *['- ' + c for c in delaylist if isinstance(c, str)])
 
 def command_restart(source: MCDR.CommandSource):
 	add_delay_task(new_thread(source.get_server().restart))

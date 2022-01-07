@@ -4,7 +4,7 @@
 
 # Delay ExE
 
-- A plugin for delay execute command until there are no player online
+- A plugin for delay execute command until all player have left
 - You can use it API
 
 ### Example for API
