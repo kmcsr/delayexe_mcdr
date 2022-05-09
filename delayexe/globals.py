@@ -23,14 +23,9 @@ class DLEConfig(MCDR.Serializable):
 		'reload':   3,
 		'save':     3,
 	}
-	_cache: Dict[str, Any] = {}
-
-	@property
-	def cache(self):
-		return self._cache
 
 	def literal(self, literal: str):
-		lvl = self.minimum_permission_level.get(literal, 0)
+		lvl = self.minimum_permission_level.get(literal, 4)
 		return MCDR.Literal(literal).requires(lambda src: src.has_permission(lvl),
 			lambda: MCDR.RText(MSG_ID.to_plain_text() + ' 权限不足', color=MCDR.RColor.red))
 

@@ -1,6 +1,6 @@
 {
     "id": "delayexe",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "name": "Delay Exe",
     "description": {
         "en_us": "Delay execute command until all player have left",

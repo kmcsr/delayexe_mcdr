@@ -1,11 +1,12 @@
 
 import functools
+import threading
 
 import mcdreforged.api.all as MCDR
 from . import globals as GL
 
 __all__ = [
-	'new_thread',
+	'new_thread', 'LockedData',
 	'join_rtext', 'send_block_message', 'send_message', 'broadcast_message', 'log_info'
 ]
 
@@ -15,6 +16,30 @@ def new_thread(call):
 	def c(*args, **kwargs):
 		return call(*args, **kwargs)
 	return c
+
+class LockedData:
+	def __init__(self, data, lock=None):
+		self._data = data
+		self._lock = threading.Lock() if lock is None else lock
+
+	@property
+	def d(self):
+		return self._data
+
+	@d.setter
+	def d(self, data):
+		self._data = data
+
+	@property
+	def l(self):
+		return self._lock
+
+	def __enter__(self):
+		self._lock.__enter__()
+		return self
+
+	def __exit__(self, *args, **kwargs):
+		return self._lock.__exit__(*args, **kwargs)
 
 def join_rtext(*args, sep=' '):
 	if len(args) == 0:

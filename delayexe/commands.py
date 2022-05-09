@@ -1,8 +1,7 @@
 
-import re
-
 import mcdreforged.api.all as MCDR
 from .utils import *
+from .api import *
 from . import globals as GL
 
 Prefix = '!!de'
@@ -15,33 +14,6 @@ HelpMessage = '''
 {0} reload 重新加载配置文件
 {0} save 保存配置文件
 '''.strip().format(Prefix)
-
-delaylist = []
-
-def add_delay_task(task):
-	delaylist.append(task)
-	GL.SERVER_INS.execute('list')
-
-def clear_delay_task():
-	delaylist.clear()
-
-_PLAYER_COUNT_RE = re.compile(r'There are (\d+) of a max of (\d+) players online.*')
-def on_info(server: MCDR.ServerInterface, info: MCDR.Info):
-	if info.is_from_server:
-		ct = _PLAYER_COUNT_RE.fullmatch(info.content)
-		if ct is not None:
-			online = int(ct[1])
-			if online == 0:
-				while len(delaylist) > 0:
-					c = delaylist.pop(0)
-					if isinstance(c, str):
-						server.execute(c)
-					else:
-						c()
-
-def on_player_left(player: str, info: MCDR.Info):
-	if len(delaylist) > 0:
-		GL.SERVER_INS.execute('list')
 
 def register(server: MCDR.PluginServerInterface):
 	server.register_command(
@@ -75,6 +47,7 @@ def command_cancel(source: MCDR.CommandSource):
 @new_thread
 def command_config_load(source: MCDR.CommandSource):
 	GL.Config = server.load_config_simple(target_class=GL.SMBConfig, source_to_reply=source)
+	send_message(source, 'SUCCESSED reload config file')
 
 @new_thread
 def command_config_save(source: MCDR.CommandSource):
