@@ -1,16 +1,21 @@
 {
-    "id": "delayexe",
-    "version": "1.1.0",
-    "name": "Delay Exe",
-    "description": {
-        "en_us": "Delay execute command until all player have left",
-        "zh_cn": "延迟执行命令, 直到所有玩家都离开游戏"
-    },
-    "dependencies": {
-        "mcdreforged": ">=2.0.0"
-    },
-    "author": [
-        "zyxkad"
-    ],
-    "link": "https://github.com/kmcsr/delayexe_mcdr/"
+  "id": "delayexe",
+  "version": "1.2.0",
+  "name": "Delay Exe",
+  "description": {
+    "en_us": "Delay execute command until all player have left",
+    "zh_cn": "延迟执行命令, 直到所有玩家都离开游戏"
+  },
+  "author": [
+    "zyxkad"
+  ],
+  "link": "https://github.com/kmcsr/delayexe_mcdr/",
+  "dependencies": {
+    "mcdreforged": ">=2.0.0",
+    "kpi": ">=1.0.0"
+  },
+  "resources": [
+    "LICENSE",
+    "lang"
+  ]
 }

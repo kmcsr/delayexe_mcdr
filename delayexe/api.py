@@ -3,9 +3,9 @@ import re
 import threading
 
 import mcdreforged.api.all as MCDR
-from .utils import *
 from .constants import *
 from . import globals as GL
+from .utils import *
 
 __all__ = [
 	'ServerNotStartError',
@@ -33,8 +33,9 @@ def add_playerlist_handler(name: str, rp: re.Pattern, online_index: int, total_i
 def add_delay_task(task):
 	with delaylist:
 		delaylist.d.add(task)
-	if GL.SERVER_INS != None and GL.SERVER_INS.is_server_startup():
-		GL.SERVER_INS.execute('list')
+	server = MCDR.ServerInterface.get_instance()
+	if server.is_server_startup():
+		server.execute('list')
 
 def clear_delay_task():
 	with delaylist:
