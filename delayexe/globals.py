@@ -14,7 +14,7 @@ BIG_BLOCK_BEFOR = '------------ {0} v{1} ::::'
 BIG_BLOCK_AFTER = ':::: {0} v{1} ============'
 
 
-class DLEConfig(Config):
+class DLEConfig(Config, msg_id=MSG_ID):
 	# 0:guest 1:user 2:helper 3:admin 4:owner
 	minimum_permission_level: Dict[str, int] = {
 		'help':     0,

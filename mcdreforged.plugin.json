@@ -1,6 +1,6 @@
 {
   "id": "delayexe",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "name": "Delay Exe",
   "description": {
     "en_us": "Delay execute command until all player have left",
@@ -12,7 +12,7 @@
   "link": "https://github.com/kmcsr/delayexe_mcdr/",
   "dependencies": {
     "mcdreforged": ">=2.0.0",
-    "kpi": ">=1.0.0"
+    "kpi": ">=1.0.1"
   },
   "resources": [
     "LICENSE",
