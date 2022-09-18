@@ -7,4 +7,4 @@ delayexe:
     {0} reload :Reload config file
     {0} save :Save config file
   task:
-    all_list: There are {0} tasks:
+    all_list: 'There are {0} tasks:'

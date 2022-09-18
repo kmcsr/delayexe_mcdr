@@ -1,10 +1,10 @@
 delayexe:
   help_msg: |-
-    {0} help 显示帮助信息
-    {0} restart 延时重启
-    {0} run <command> 延迟执行
-    {0} cancel 撤销所有任务
-    {0} reload 重新加载配置文件
-    {0} save 保存配置文件
+    {0} help :显示帮助信息
+    {0} restart :延时重启
+    {0} run <command> :延迟执行
+    {0} cancel :撤销所有任务
+    {0} reload :重新加载配置文件
+    {0} save :保存配置文件
   task:
-    all_list: 当前共有{0}个任务:
+    all_list: '当前共有{0}个任务:'
