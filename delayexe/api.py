@@ -8,7 +8,7 @@ from . import globals as GL
 from .utils import *
 
 __all__ = [
-	'ServerNotStartError',
+	'ServerNotRunningError',
 	'add_playerlist_handler', 'add_delay_task', 'clear_delay_task', 'get_playerlist_data'
 ]
 
@@ -22,7 +22,7 @@ _HANDLE_MAP = {
 	'forge_handler': (re.compile(r'There are (\d+)/(\d+) players online.*'), 1, 2)
 }
 
-class ServerNotStartError(RuntimeError):
+class ServerNotRunningError(RuntimeError):
 	def __init__(self):
 		super().__init__('Server is not start')
 
@@ -54,7 +54,7 @@ def _trigger_delay_list(server: MCDR.ServerInterface):
 def get_playerlist_data(server: MCDR.ServerInterface):
 	with playerlist_data:
 		if not server.is_server_startup():
-			raise ServerNotStartError()
+			raise ServerNotRunningError()
 		if playerlist_data.d[1]:
 			playerlist_data.d[1] = False
 			server.execute('list')
@@ -91,4 +91,4 @@ def on_player_left(server: MCDR.PluginServerInterface, player: str):
 		with player_empty:
 			player_empty.d = True
 		_trigger_delay_list(server)
-		server.dispatch_event(ON_PLAYER_EMPTY, [])
+		server.dispatch_event(ON_LAST_PLAYER_LEAVE, [])
