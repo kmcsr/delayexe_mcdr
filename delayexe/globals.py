@@ -27,16 +27,16 @@ class DLEConfig(Config, msg_id=MSG_ID):
 	}
 
 def get_config():
-	return DLEConfig.instance()
+	return DLEConfig.instance
 
 def init(server: MCDR.PluginServerInterface):
 	global BIG_BLOCK_BEFOR, BIG_BLOCK_AFTER
 	metadata = server.get_self_metadata()
 	BIG_BLOCK_BEFOR = BIG_BLOCK_BEFOR.format(metadata.name, metadata.version)
 	BIG_BLOCK_AFTER = BIG_BLOCK_AFTER.format(metadata.name, metadata.version)
-	DLEConfig.load(server.get_plugin_command_source(), server)
+	DLEConfig.init_instance(server, load_after_init=True)
 
 def destory(server: MCDR.PluginServerInterface):
 	cfg = get_config()
 	if cfg is not None:
-		cfg.save(server.get_plugin_command_source())
+		cfg.save()
