@@ -6,7 +6,7 @@ import mcdreforged.api.all as MCDR
 from kpi.config import Config
 
 __all__ = [
-	'MSG_ID', 'BIG_BLOCK_BEFOR', 'BIG_BLOCK_AFTER', 'DLEConfig', 'Config', 'init', 'destory'
+	'MSG_ID', 'BIG_BLOCK_BEFOR', 'BIG_BLOCK_AFTER', 'DLEConfig', 'get_config', 'init', 'destory'
 ]
 
 MSG_ID = MCDR.RText('[DLE]', color=MCDR.RColor.green)
@@ -23,7 +23,6 @@ class DLEConfig(Config, msg_id=MSG_ID):
 		'run':      3,
 		'cancel':   2,
 		'reload':   3,
-		'save':     3,
 	}
 
 def get_config():

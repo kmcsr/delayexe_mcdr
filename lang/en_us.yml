@@ -5,6 +5,5 @@ delayexe:
     {0} run <command> :Delay execute command
     {0} cancel :Cancel all tasks
     {0} reload :Reload config file
-    {0} save :Save config file
   task:
     all_list: 'There are {0} tasks:'

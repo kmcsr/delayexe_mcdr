@@ -1,32 +1,34 @@
 
 import mcdreforged.api.all as MCDR
+
+from .globals import *
 from .utils import *
 from .api import *
-from . import globals as GL
 
 Prefix = '!!de'
 
 def register(server: MCDR.PluginServerInterface):
+	cfg = get_config()
+	server.register_help_message(Prefix, 'Delay ExE help message')
 	server.register_command(
 		MCDR.Literal(Prefix).
 		runs(command_help).
-		then(GL.get_config().literal('help').runs(command_help)).
-		then(GL.get_config().literal('query').runs(command_query)).
-		then(GL.get_config().literal('restart').runs(command_restart)).
-		then(GL.get_config().literal('run').
+		then(cfg.literal('help').runs(command_help)).
+		then(cfg.literal('query').runs(command_query)).
+		then(cfg.literal('restart').runs(command_restart)).
+		then(cfg.literal('run').
 			then(MCDR.GreedyText('command').runs(lambda src, ctx: command_run(src, ctx['command'])))).
-		then(GL.get_config().literal('cancel').runs(command_cancel)).
-		then(GL.get_config().literal('reload').runs(command_config_load)).
-		then(GL.get_config().literal('save').runs(command_config_save))
+		then(cfg.literal('cancel').runs(command_cancel)).
+		then(cfg.literal('reload').runs(command_config_load))
 	)
 
 def command_help(source: MCDR.CommandSource):
-	send_message(source, GL.BIG_BLOCK_BEFOR, tr('help_msg', Prefix), GL.BIG_BLOCK_AFTER, sep='\n')
+	send_message(source, BIG_BLOCK_BEFOR, tr('help_msg', Prefix), BIG_BLOCK_AFTER, sep='\n')
 
 def command_query(source: MCDR.CommandSource):
-	send_message(source, GL.BIG_BLOCK_BEFOR)
+	send_message(source, BIG_BLOCK_BEFOR)
 	send_message(source, tr('tasks.all_list', len(delaylist)), *['- ' + c for c in delaylist if isinstance(c, str)])
-	send_message(source, GL.BIG_BLOCK_AFTER)
+	send_message(source, BIG_BLOCK_AFTER)
 
 def command_restart(source: MCDR.CommandSource):
 	add_delay_task(new_thread(source.get_server().restart))
@@ -39,8 +41,5 @@ def command_cancel(source: MCDR.CommandSource):
 
 @new_thread
 def command_config_load(source: MCDR.CommandSource):
-	GL.DLEConfig.load(source)
-
-@new_thread
-def command_config_save(source: MCDR.CommandSource):
-	GL.get_config().save(source)
+	get_config().load()
+	send_message(source, MSG_ID, 'Config file reloaded')

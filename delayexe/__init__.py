@@ -33,4 +33,4 @@ def on_player_joined(server: MCDR.PluginServerInterface, player: str, info: MCDR
 	api.on_player_joined(server, player, info)
 
 def on_player_left(server: MCDR.PluginServerInterface, player: str):
-  api.on_player_left(server, player)
+	api.on_player_left(server, player)

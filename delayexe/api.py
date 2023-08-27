@@ -71,12 +71,13 @@ def on_load(server: MCDR.PluginServerInterface):
 def on_info(server: MCDR.PluginServerInterface, info: MCDR.Info):
 	if info.is_from_server:
 		global handler, playerlist_data
-		ct = handler[0].fullmatch(info.content)
-		if ct is not None:
-			with playerlist_data:
-				playerlist_data.d[0] = (int(ct[handler[1]]), int(ct[handler[2]]))
-				playerlist_data.d[1] = True
-				playerlist_data.l.notify_all()
+		if handler is not None:
+			ct = handler[0].fullmatch(info.content)
+			if ct is not None:
+				with playerlist_data:
+					playerlist_data.d[0] = (int(ct[handler[1]]), int(ct[handler[2]]))
+					playerlist_data.d[1] = True
+					playerlist_data.l.notify_all()
 
 @new_thread
 def on_player_joined(server: MCDR.PluginServerInterface, player: str, info: MCDR.Info):
