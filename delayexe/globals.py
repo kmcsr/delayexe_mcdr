@@ -25,8 +25,8 @@ class DLEConfig(Config, msg_id=MSG_ID):
 		'reload':   3,
 	}
 
-def get_config():
-	return DLEConfig.instance
+def get_config() -> DLEConfig:
+	return DLEConfig.instance()
 
 def init(server: MCDR.PluginServerInterface):
 	global BIG_BLOCK_BEFOR, BIG_BLOCK_AFTER
