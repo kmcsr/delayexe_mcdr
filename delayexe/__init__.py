@@ -1,17 +1,18 @@
 
 import mcdreforged.api.all as MCDR
 
-globals_ = globals
 from . import constants
+from .constants import *
 from . import globals as GL
 from .utils import *
 from . import api
+from .api import *
 from . import commands as CMD
 
 __all__ = []
 
-export_pkg(globals_(), api)
-export_pkg(globals_(), constants)
+__all__.extend(api.__all__)
+__all__.extend(constants.__all__)
 
 def on_load(server: MCDR.PluginServerInterface, prev_module):
 	if prev_module is None:
@@ -19,7 +20,7 @@ def on_load(server: MCDR.PluginServerInterface, prev_module):
 	else:
 		log_info('Delay ExE is on RELOAD')
 	GL.init(server)
-	api.on_load(server)
+	api.on_load(server, prev_module)
 	CMD.register(server)
 
 def on_unload(server: MCDR.PluginServerInterface):

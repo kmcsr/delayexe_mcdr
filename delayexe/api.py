@@ -13,7 +13,6 @@ __all__ = [
 ]
 
 delaylist = LockedData(set())
-handler = None
 player_empty = LockedData(True)
 playerlist_data = LockedData([(0, 0), True], threading.Condition(threading.Lock()))
 
@@ -24,7 +23,7 @@ _HANDLE_MAP = {
 
 class ServerNotRunningError(RuntimeError):
 	def __init__(self):
-		super().__init__('Server is not start')
+		super().__init__('Server is not running')
 
 def add_playerlist_handler(name: str, rp: re.Pattern, online_index: int, total_index: int, *, force: bool = False):
 	assert force or name not in _HANDLE_MAP, f'Handler "{name}" already registered in handle map'
@@ -33,9 +32,6 @@ def add_playerlist_handler(name: str, rp: re.Pattern, online_index: int, total_i
 def add_delay_task(task):
 	with delaylist:
 		delaylist.d.add(task)
-	server = MCDR.ServerInterface.get_instance()
-	if server.is_server_startup():
-		server.execute('list')
 
 def clear_delay_task():
 	with delaylist:
@@ -48,10 +44,15 @@ def _trigger_delay_list(server: MCDR.ServerInterface):
 	for c in dl:
 		if isinstance(c, str):
 			server.execute(c)
-		else:
+		elif callable(c):
 			c()
+		else:
+			raise RuntimeError('Unexpected delay task type {}'.format(type(c)))
 
 def get_playerlist_data(server: MCDR.ServerInterface):
+	"""
+	:return: (current_player, max_player)
+	"""
 	with playerlist_data:
 		if not server.is_server_startup():
 			raise ServerNotRunningError()
@@ -61,16 +62,23 @@ def get_playerlist_data(server: MCDR.ServerInterface):
 		playerlist_data.l.wait()
 	return playerlist_data.d[0]
 
-def on_load(server: MCDR.PluginServerInterface):
-	global handler
+def get_handler(server: MCDR.ServerInterface):
 	hdr = server.get_mcdr_config()['handler']
 	if hdr not in _HANDLE_MAP:
 		hdr = 'vanilla_handler'
-	handler = _HANDLE_MAP[hdr]
+	return _HANDLE_MAP[hdr]
 
-def on_info(server: MCDR.PluginServerInterface, info: MCDR.Info):
+def on_load(server: MCDR.PluginServerInterface, prev_module):
+	if prev_module is not None:
+		if len(prev_module.delaylist.d) > 0:
+			with delaylist:
+				delaylist.d = prev_module.delaylist.d
+			server.execute('list')
+
+def on_info(server: MCDR.ServerInterface, info: MCDR.Info):
 	if info.is_from_server:
-		global handler, playerlist_data
+		global playerlist_data
+		handler = get_handler(server)
 		if handler is not None:
 			ct = handler[0].fullmatch(info.content)
 			if ct is not None:
@@ -84,7 +92,7 @@ def on_player_joined(server: MCDR.PluginServerInterface, player: str, info: MCDR
 	with player_empty:
 		if player_empty.d and get_playerlist_data(server)[0] > 0:
 			player_empty.d = False
-			server.dispatch_event(ON_FIRST_PLAYER_JOIN, [])
+			server.dispatch_event(ON_FIRST_PLAYER_JOIN, tuple())
 
 @new_thread
 def on_player_left(server: MCDR.PluginServerInterface, player: str):
@@ -92,4 +100,4 @@ def on_player_left(server: MCDR.PluginServerInterface, player: str):
 		with player_empty:
 			player_empty.d = True
 		_trigger_delay_list(server)
-		server.dispatch_event(ON_LAST_PLAYER_LEAVE, [])
+		server.dispatch_event(ON_LAST_PLAYER_LEAVE, tuple())

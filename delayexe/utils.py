@@ -2,20 +2,19 @@
 import functools
 
 import mcdreforged.api.all as MCDR
-import kpi.utils
+
+from kpi.utils import *
 
 __all__ = [
-	'new_thread', 'tr'
+	'new_thread', 'tr', 'debug', 'log_info', 'log_warn', 'log_error',
+	'get_server_instance', 'dyn_call',
+	'new_timer', 'new_command', 'join_rtext', 'send_message', 'broadcast_message',
+	'assert_instanceof', 'require_player',
+	'LockedData',
 ]
 
-kpi.utils.export_pkg(globals(), kpi.utils)
-
 def new_thread(call):
-	@MCDR.new_thread('delayexe')
-	@functools.wraps(call)
-	def c(*args, **kwargs):
-		return call(*args, **kwargs)
-	return c
+	return MCDR.new_thread('delayexe')(call)
 
 def tr(key: str, *args, **kwargs):
-	return MCDR.ServerInterface.get_instance().rtr(f'delayexe.{key}', *args, **kwargs)
+	return get_server_instance().rtr(f'delayexe.{key}', *args, **kwargs)

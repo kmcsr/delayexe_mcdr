@@ -4,6 +4,7 @@ import mcdreforged.api.all as MCDR
 from .globals import *
 from .utils import *
 from .api import *
+from .api import delaylist
 
 Prefix = '!!de'
 
@@ -27,7 +28,7 @@ def command_help(source: MCDR.CommandSource):
 
 def command_query(source: MCDR.CommandSource):
 	send_message(source, BIG_BLOCK_BEFOR)
-	send_message(source, tr('tasks.all_list', len(delaylist)), *['- ' + c for c in delaylist if isinstance(c, str)])
+	send_message(source, tr('tasks.all_list', len(delaylist.d)), *['- ' + c for c in delaylist.d if isinstance(c, str)])
 	send_message(source, BIG_BLOCK_AFTER)
 
 def command_restart(source: MCDR.CommandSource):
